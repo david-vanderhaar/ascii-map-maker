@@ -1,0 +1,41 @@
+$theme-main: #eee;
+
+button:focus {
+  background-color: initial;
+}
+
+.TileMap {
+  overflow: scroll;
+  border: 30px solid $theme-main;
+  max-height: 75vh;
+}
+
+.ToolPanel {
+  border: 30px solid $theme-main;
+  background-color: $theme-main;
+}
+
+.TileForm {
+  .form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    input {
+      border-bottom: none;
+      padding: 0px 12px; 
+    }
+    .text-field {
+      margin: 8px 0px;
+    }
+  }
+}
+
+.TilePalette {
+  .btn-full-width {
+    width: 100%;
+  }
+}
+
+.konvajs-content {
+  background-color: #333;
+}
