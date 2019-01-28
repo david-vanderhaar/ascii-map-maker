@@ -4,6 +4,10 @@ button:focus {
   background-color: initial;
 }
 
+.hidden {
+  display: none;
+}
+
 .TileMap {
   overflow: scroll;
   border: 30px solid $theme-main;
@@ -11,8 +15,10 @@ button:focus {
 }
 
 .ToolPanel {
-  border: 30px solid $theme-main;
   background-color: $theme-main;
+  .tool-pane {
+    padding: 0px 30px 30px 30px;
+  }
 }
 
 .TileForm {

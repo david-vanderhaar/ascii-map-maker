@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import TileForm from './TileForm';
 import Button from '@material-ui/core/Button';
 
-const TilePlate = ({label, color, character, data, handleSwapSelectedTile}) => (
+const TilePlate = ({id, label, color, character, data, handleSwapSelectedTile, handleRemoveTile}) => (
   <div className='TilePlate'>
     <Button 
       variant="contained" 
@@ -13,12 +13,11 @@ const TilePlate = ({label, color, character, data, handleSwapSelectedTile}) => (
     >
       {label}
     </Button>
-    <Button color="secondary" aria-label="Edit tile">
-      <i className="material-icons">
-        edit
-      </i>
-    </Button>
-    <Button color="secondary" aria-label="remove tile">
+    <Button 
+      color="secondary" 
+      aria-label="remove tile"
+      onClick={() => {handleRemoveTile(id)}}
+    >
       <i className="material-icons">
         delete
       </i>
@@ -32,6 +31,7 @@ class TilePalette extends Component {
     this.state = {
       tiles: [
         {
+          id: 1,
           label: 'land',
           color: '#298',
           character: 'L',
@@ -47,11 +47,13 @@ class TilePalette extends Component {
       return (
         <TilePlate 
           key={index}
+          id={tile.id}
           label={tile.label}
           color={tile.color}
           character={tile.character}
           data={{...tile.data}}
           handleSwapSelectedTile={this.props.handleSwapSelectedTile}
+          handleRemoveTile={this.handleRemoveTile.bind(this)}
         />
       )
     })
@@ -63,16 +65,24 @@ class TilePalette extends Component {
 
   handleAddTile (new_tile) {
     let tiles = [...this.state.tiles];
-    tiles.push({...new_tile});
+    let next_id = tiles.length > 0 ? tiles[tiles.length - 1].id + 1 : 1;
+    let tile_id = {id: next_id};
+    tiles.push({...tile_id, ...new_tile});
     this.setState({
       tiles,
       form_is_visible: false,
     })
   }
 
+  handleRemoveTile (id) {
+    let tiles = this.state.tiles.filter((tile) => tile.id !== id);
+    this.setState({tiles});
+  }
+
   render() {
     return (
-      <div className="TilePalette">
+      <div className="TilePalette tool-pane">
+        <h4>Palette</h4>
         {this.drawTilePlates()}
         <br />
         <Button 
