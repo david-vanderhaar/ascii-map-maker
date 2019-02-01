@@ -6,13 +6,12 @@ class TileMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tiles: new Array(props.cols * props.rows).fill({type: 0, character: '.', color:'white'}),
       mouse_down: false,
     };
   }
 
   getTile (col, row) {
-    return this.state.tiles[row * this.props.cols + col]
+    return this.props.tiles[row * this.props.cols + col]
   }
 
   drawTiles () {
@@ -29,7 +28,7 @@ class TileMap extends Component {
             color={tile.color}
             tile_size={this.props.tile_size}
             mouse_down={this.state.mouse_down}
-            handleUpdateTile={this.handleUpdateTile.bind(this)}
+            onUpdateTile={this.handleUpdateTile.bind(this)}
           />
         )
       }
@@ -41,14 +40,13 @@ class TileMap extends Component {
   handleUpdateTile (x, y) {
     const col = x / this.props.tile_size;
     const row = y / this.props.tile_size;
-    let tiles = this.state.tiles;
+    let tiles = this.props.tiles;
     tiles[row * this.props.cols + col] = {
       type: 1,
       character: this.props.selected_tile.character,
       color: this.props.selected_tile.color,
     };
-
-    this.setState({tiles});
+    this.props.onUpdateTiles(tiles)
   }
 
   handleMouseDown () {

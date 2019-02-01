@@ -8,6 +8,14 @@ button:focus {
   display: none;
 }
 
+.NavBar {
+  margin-bottom: 24px; 
+  .nav-title {
+    flex-grow: 1;
+    cursor: pointer;
+  }
+}
+
 .TileMap {
   overflow: scroll;
   border: 30px solid $theme-main;
@@ -42,6 +50,11 @@ button:focus {
   }
 }
 
+.JsonView {
+  padding: 0px 74px;
+}
+
 .konvajs-content {
   background-color: #333;
 }
+

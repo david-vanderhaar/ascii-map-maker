@@ -40,7 +40,7 @@ export class TextTile extends Component {
   }
 
   handleClick = () => {
-    this.props.handleUpdateTile(this.props.x, this.props.y)
+    this.props.onUpdateTile(this.props.x, this.props.y)
   };
 
   handleMouseOver = () => {
@@ -48,7 +48,7 @@ export class TextTile extends Component {
       fill: 'red',
     }
     if (this.props.mouse_down) {
-      this.props.handleUpdateTile(this.props.x, this.props.y)
+      this.props.onUpdateTile(this.props.x, this.props.y)
     }
     this.setState(new_state);
   };
