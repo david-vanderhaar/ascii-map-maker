@@ -1,7 +1,7 @@
 $theme-main: #eee;
 
 button:focus {
-  background-color: initial;
+  // background-color: inherit;
 }
 
 .hidden {
@@ -11,8 +11,16 @@ button:focus {
 .NavBar {
   margin-bottom: 24px; 
   .nav-title {
-    flex-grow: 1;
     cursor: pointer;
+    border-right: solid 1px white;
+    padding-right: 8px;
+    margin-right: 8px;
+  }
+  .Toolbar {
+    flex-grow: 1;
+    .btn-tool {
+      margin: 0px 8px;
+    }
   }
 }
 

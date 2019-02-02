@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import JsonView from './Components/JsonView';
 import TileMap from './Components/TileMap';
 import ToolPanel from './Components/ToolPanel';
+import GridToolbar from './Components/Toolbar';
 import Grid from '@material-ui/core/Grid';
 
 class App extends Component {
@@ -18,23 +19,33 @@ class App extends Component {
     const rows = 40;
     const tile_size = 32;
     const tile_gutter = 8;
+    const empty_tile = { type: 0, character: '', color: 'white' };
 
     this.state = {
       cols,
       rows,
       tile_size,
       tile_gutter,
-      tiles: new Array(cols * rows).fill({ type: 0, character: '.', color: 'white' }),
+      empty_tile,
+      tiles: new Array(cols * rows).fill({...empty_tile}),
       selected_tile: {
         character: '#',
         color: '#fff',
         data: null,
       },
+      is_erasing: false,
     }
   }
 
+  handleToggleErasing () {
+    this.setState({is_erasing: true});
+  }
+
   handleSwapSelectedTile (selected_tile_properties) {
-    this.setState({selected_tile: selected_tile_properties});
+    this.setState({
+      selected_tile: selected_tile_properties, 
+      is_erasing: false // reset erasing tool
+    });
   }
 
   handleUpdateTiles (tiles) {
@@ -48,6 +59,12 @@ class App extends Component {
           <AppBar className="NavBar" position="static">
             <Toolbar>
               <h5 className="nav-title" onClick={() => { window.location = '#/' }}>ASCII Map Maker</h5>
+              <GridToolbar 
+                onToggleErasing={this.handleToggleErasing.bind(this)}
+                onTogglePencil={this.handleSwapSelectedTile.bind(this)}
+                selected_tile={this.state.selected_tile}
+                is_erasing={this.state.is_erasing}
+              />
               <div className='nav-buttons-right'>
                 <Button color="inherit" onClick={() => {window.location = '#/export'}}>Export</Button>
               </div>
@@ -70,6 +87,8 @@ class App extends Component {
                     tile_gutter={8}
                     selected_tile={{ ...this.state.selected_tile }}
                     onUpdateTiles={this.handleUpdateTiles.bind(this)}
+                    is_erasing={this.state.is_erasing}
+                    empty_tile={this.state.empty_tile}
                   />
                 </ Grid>
                 <Grid item xs={12} sm={4}>

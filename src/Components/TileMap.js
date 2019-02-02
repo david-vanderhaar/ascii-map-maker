@@ -41,11 +41,13 @@ class TileMap extends Component {
     const col = x / this.props.tile_size;
     const row = y / this.props.tile_size;
     let tiles = this.props.tiles;
-    tiles[row * this.props.cols + col] = {
-      type: 1,
-      character: this.props.selected_tile.character,
-      color: this.props.selected_tile.color,
-    };
+    tiles[row * this.props.cols + col] = this.props.is_erasing
+      ? ({...this.props.empty_tile})
+      : ({
+          type: 1,
+          character: this.props.selected_tile.character,
+          color: this.props.selected_tile.color,
+        });
     this.props.onUpdateTiles(tiles)
   }
 

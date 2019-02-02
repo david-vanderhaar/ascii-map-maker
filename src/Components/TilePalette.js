@@ -36,7 +36,28 @@ class TilePalette extends Component {
           color: '#298',
           character: 'L',
           data: {type: 'province', owner: 'Oda'}
-        }
+        },
+        {
+          id: 2,
+          label: 'water',
+          color: '#ace',
+          character: '~',
+          data: {type: 'natural', owner: 'none'}
+        },
+        {
+          id: 3,
+          label: 'mountain',
+          color: '#bbb',
+          character: 'M',
+          data: {type: 'natural', owner: 'none'}
+        },
+        {
+          id: 4,
+          label: 'army',
+          color: '#f44',
+          character: '@',
+          data: {type: 'troop', owner: 'Oda'}
+        },
       ],
       form_is_visible: false,
     };
