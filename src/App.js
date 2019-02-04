@@ -15,8 +15,8 @@ class App extends Component {
   constructor() {
     super();
 
-    const cols = 40;
-    const rows = 40;
+    const cols = 5;
+    const rows = 5;
     const tile_size = 32;
     const tile_gutter = 8;
     const empty_tile = { type: 0, character: '', color: 'white' };
@@ -33,19 +33,17 @@ class App extends Component {
         color: '#fff',
         data: null,
       },
-      is_erasing: false,
+      tool_in_use: 'pencil',
     }
   }
 
-  handleToggleErasing () {
-    this.setState({is_erasing: true});
+  handleToolSwitch (tool_in_use) {
+    this.setState({tool_in_use});
   }
 
   handleSwapSelectedTile (selected_tile_properties) {
-    this.setState({
-      selected_tile: selected_tile_properties, 
-      is_erasing: false // reset erasing tool
-    });
+    let tool_in_use = this.state.tool_in_use === 'eraser' ? 'pencil' : this.state.tool_in_use
+    this.setState({selected_tile: selected_tile_properties, tool_in_use});
   }
 
   handleUpdateTiles (tiles) {
@@ -60,10 +58,9 @@ class App extends Component {
             <Toolbar>
               <h5 className="nav-title" onClick={() => { window.location = '#/' }}>ASCII Map Maker</h5>
               <GridToolbar 
-                onToggleErasing={this.handleToggleErasing.bind(this)}
-                onTogglePencil={this.handleSwapSelectedTile.bind(this)}
+                onToolSwitch={this.handleToolSwitch.bind(this)}
                 selected_tile={this.state.selected_tile}
-                is_erasing={this.state.is_erasing}
+                tool_in_use={this.state.tool_in_use}
               />
               <div className='nav-buttons-right'>
                 <Button color="inherit" onClick={() => {window.location = '#/export'}}>Export</Button>
@@ -87,7 +84,7 @@ class App extends Component {
                     tile_gutter={8}
                     selected_tile={{ ...this.state.selected_tile }}
                     onUpdateTiles={this.handleUpdateTiles.bind(this)}
-                    is_erasing={this.state.is_erasing}
+                    tool_in_use={this.state.tool_in_use}
                     empty_tile={this.state.empty_tile}
                   />
                 </ Grid>
