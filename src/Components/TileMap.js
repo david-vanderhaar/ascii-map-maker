@@ -42,7 +42,6 @@ class TileMap extends Component {
     let current_tile = tiles[y * cols + x];
     // Base cases 
     if (x < 0 || x >= cols || y < 0 || y >= rows) { return tiles; }
-    // console.log(JSON.stringify(current_tile) !== JSON.stringify(prev_tile))
     if (JSON.stringify(current_tile) !== JSON.stringify(prev_tile)) { return tiles; }
     
     // Replace the color at (x, y) 

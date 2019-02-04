@@ -23,7 +23,6 @@ export class ColoredRect extends Component {
         y={this.props.y}
         width={this.props.tile_size - this.props.tile_gutter}
         height={this.props.tile_size - this.props.tile_gutter}
-        fill={this.state.color}
         onClick={this.handleClick}
       />
     );
@@ -36,6 +35,8 @@ export class TextTile extends Component {
     this.state = {
       character: props.character,
       fill: props.color,
+      hover_fill: 'red',
+      is_hovering: false,
     };
   }
 
@@ -45,7 +46,7 @@ export class TextTile extends Component {
 
   handleMouseOver = () => {
     let new_state = {
-      fill: 'red',
+      is_hovering: true,
     }
     if (this.props.mouse_down) {
       this.props.onUpdateTile(this.props.x, this.props.y)
@@ -55,7 +56,7 @@ export class TextTile extends Component {
 
   handleMouseOut = () => {
     this.setState({
-      fill: this.props.color
+      is_hovering: false,
     });
   };
 
@@ -63,7 +64,7 @@ export class TextTile extends Component {
     return (
       <Text
         text={this.props.character}
-        fill={this.state.fill}
+        fill={this.state.is_hovering ? this.state.hover_fill: this.props.color}
         x={this.props.x}
         y={this.props.y}
         fontSize={16}

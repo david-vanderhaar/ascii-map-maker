@@ -8,6 +8,10 @@ button:focus {
   display: none;
 }
 
+.App {
+  flex: 1;
+}
+
 .NavBar {
   margin-bottom: 24px; 
   .nav-title {
@@ -28,6 +32,7 @@ button:focus {
   overflow: scroll;
   border: 30px solid $theme-main;
   max-height: 75vh;
+  background-color: #eee;
 }
 
 .ToolPanel {

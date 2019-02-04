@@ -15,8 +15,8 @@ class App extends Component {
   constructor() {
     super();
 
-    const cols = 5;
-    const rows = 5;
+    const cols = 30;
+    const rows = 30;
     const tile_size = 32;
     const tile_gutter = 8;
     const empty_tile = { type: 0, character: '', color: 'white' };
@@ -74,7 +74,7 @@ class App extends Component {
             className="fade"
           >
             <Route exact path={'/'} render={(props) => (
-              <Grid container spacing={24}>
+              <Grid container >
                 <Grid item xs={12} sm={8}>
                   <TileMap
                     cols={this.state.cols}
