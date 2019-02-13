@@ -88,9 +88,8 @@ class TilePalette extends Component {
     let tiles = [...this.state.tiles];
     let next_id = tiles.length > 0 ? tiles[tiles.length - 1].id + 1 : 1;
     let tile_id = {id: next_id};
-    tiles.push({...tile_id, ...new_tile});
     this.setState({
-      tiles,
+      tiles: tiles.concat({ ...tile_id, ...new_tile }),
       form_is_visible: false,
     })
   }

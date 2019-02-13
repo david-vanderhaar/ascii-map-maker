@@ -15,11 +15,10 @@ class TileMap extends Component {
   }
 
   drawTiles () {
-    let tiles = [];
-    for (let c = 0; c < this.props.cols; c++) {
-      for (let r = 0; r < this.props.rows; r++) {
+    let tiles = new Array(this.props.cols).fill(null).map((empty, c) => {
+      return new Array(this.props.rows).fill(null).map((empty, r) => {
         let tile = this.getTile(c, r);
-        tiles.push(
+        return (
           <Tiles.TextTile
             key={`${c}-${r}`}
             x={c * this.props.tile_size}
@@ -31,9 +30,8 @@ class TileMap extends Component {
             onUpdateTile={this.handleUpdateTile.bind(this)}
           />
         )
-      }
-    }
-    
+      })
+    })
     return tiles;
   }
 
@@ -74,6 +72,7 @@ class TileMap extends Component {
           type: 1,
           character: this.props.selected_tile.character,
           color: this.props.selected_tile.color,
+          data: JSON.stringify(this.props.selected_tile.data),
         });
         break;
       case 'eraser':

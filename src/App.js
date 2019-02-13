@@ -15,11 +15,11 @@ class App extends Component {
   constructor() {
     super();
 
-    const cols = 30;
-    const rows = 30;
+    const cols = 36;
+    const rows = 20;
     const tile_size = 32;
     const tile_gutter = 8;
-    const empty_tile = { type: 0, character: '', color: 'white' };
+    const empty_tile = { type: 0, character: '', color: 'white', data: null };
 
     this.state = {
       cols,
@@ -48,6 +48,10 @@ class App extends Component {
 
   handleUpdateTiles (tiles) {
     this.setState({tiles})
+  }
+
+  handleUpdateGridSize (cols, rows, tiles) {
+    this.setState({cols, rows, tiles})
   }
 
   render() {
@@ -89,7 +93,14 @@ class App extends Component {
                   />
                 </ Grid>
                 <Grid item xs={12} sm={4}>
-                  <ToolPanel handleSwapSelectedTile={this.handleSwapSelectedTile.bind(this)} />
+                  <ToolPanel 
+                    cols={this.state.cols}
+                    rows={this.state.rows}
+                    tiles={this.state.tiles}
+                    empty_tile={this.state.empty_tile}
+                    handleSwapSelectedTile={this.handleSwapSelectedTile.bind(this)} 
+                    onUpdateGridSize={this.handleUpdateGridSize.bind(this)} 
+                  />
                 </ Grid>
               </ Grid>
             )} />
