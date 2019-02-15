@@ -9,16 +9,22 @@ class Settings extends Component {
     this.state = {
       cols: props.cols,
       rows: props.rows,
+      grid_min: 1,
+      grid_max: 50,
     }
   }
 
   handleGridChange = name => event => {
-    let new_size = parseInt(event.target.value)
-    if (new_size >= 0 && new_size <= 50) {
-      this.setState({
-        [name]: new_size,
-      });
-    }
+    let new_size = parseInt(event.target.value) ? parseInt(event.target.value) : this.state.grid_min;
+    this.setState({
+      [name]: new_size,
+    }, () => {
+      if (new_size < this.state.grid_min) {
+        this.setState({[name]: this.state.grid_min})
+      } else if (new_size > this.state.grid_max) {
+        this.setState({[name]: this.state.grid_max})
+      }
+    });
   };
 
   onSubmit () {
@@ -37,7 +43,7 @@ class Settings extends Component {
 
   render() {
     return (
-      <div className='Settings'>
+      <div className='Settings tool-pane'>
         <div className='form row'>
           <div className='inline-group'>
             <TextField

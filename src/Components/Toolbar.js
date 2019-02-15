@@ -46,6 +46,28 @@ export class Toolbar extends Component {
             select_all
           </i>
         </Button>
+        <Button 
+          className='btn-tool' 
+          onClick={() => { this.props.onUndo()}}  
+          variant='contained'
+          color="secondary"
+          disabled={this.props.tile_history_index >= this.props.tile_history.length - 1}
+        >
+          <i className="material-icons">
+            undo
+          </i>
+        </Button>
+        <Button 
+          className='btn-tool' 
+          onClick={() => { this.props.onRedo()}}  
+          variant='contained'
+          color="secondary"
+          disabled={this.props.tile_history_index <= 0}
+        >
+          <i className="material-icons">
+            redo
+          </i>
+        </Button>
       </div>
     );
   }

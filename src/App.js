@@ -20,6 +20,7 @@ class App extends Component {
     const tile_size = 32;
     const tile_gutter = 8;
     const empty_tile = { type: 0, character: '', color: 'white', data: null };
+    const tiles = new Array(cols * rows).fill({ ...empty_tile })
 
     this.state = {
       cols,
@@ -27,7 +28,10 @@ class App extends Component {
       tile_size,
       tile_gutter,
       empty_tile,
-      tiles: new Array(cols * rows).fill({...empty_tile}),
+      tiles,
+      tile_history: [JSON.stringify(tiles)],
+      tile_history_index: 0,
+      tile_history_max: 10,
       selected_tile: {
         character: '#',
         color: '#fff',
@@ -41,13 +45,37 @@ class App extends Component {
     this.setState({tool_in_use});
   }
 
+  handleUndo () {
+    let tile_history_index = this.state.tile_history_index + 1
+    let tiles = JSON.parse(this.state.tile_history[tile_history_index])
+    this.setState({
+      tiles,
+      tile_history_index
+    })
+  }
+  
+  handleRedo () {
+    let tile_history_index = this.state.tile_history_index - 1
+    let tiles = JSON.parse(this.state.tile_history[tile_history_index])
+    this.setState({
+      tiles,
+      tile_history_index
+    })
+  }
+
   handleSwapSelectedTile (selected_tile_properties) {
     let tool_in_use = this.state.tool_in_use === 'eraser' ? 'pencil' : this.state.tool_in_use
     this.setState({selected_tile: selected_tile_properties, tool_in_use});
   }
 
   handleUpdateTiles (tiles) {
-    this.setState({tiles})
+    let tile_history = [JSON.stringify(tiles), ...this.state.tile_history].slice(this.state.tile_history_index, this.state.tile_history_max)
+    
+    this.setState({
+      tiles,
+      tile_history,
+      tile_history_index: 0,
+    })
   }
 
   handleUpdateGridSize (cols, rows, tiles) {
@@ -63,6 +91,11 @@ class App extends Component {
               <h5 className="nav-title" onClick={() => { window.location = '#/' }}>ASCII Map Maker</h5>
               <GridToolbar 
                 onToolSwitch={this.handleToolSwitch.bind(this)}
+                onUndo={this.handleUndo.bind(this)}
+                onRedo={this.handleRedo.bind(this)}
+                tile_history={this.state.tile_history}
+                // tile_history_max={this.state.tile_history_max}
+                tile_history_index={this.state.tile_history_index}
                 selected_tile={this.state.selected_tile}
                 tool_in_use={this.state.tool_in_use}
               />
@@ -98,6 +131,7 @@ class App extends Component {
                     rows={this.state.rows}
                     tiles={this.state.tiles}
                     empty_tile={this.state.empty_tile}
+                    selected_tile={this.state.selected_tile}
                     handleSwapSelectedTile={this.handleSwapSelectedTile.bind(this)} 
                     onUpdateGridSize={this.handleUpdateGridSize.bind(this)} 
                   />

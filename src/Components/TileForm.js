@@ -6,11 +6,17 @@ import Button from '@material-ui/core/Button';
 class TileForm extends Component {
   constructor(props) {
     super(props);
+    let tile_to_edit = this.props.editing_tile_id ? this.props.tiles.filter((tile) => tile.id === this.props.editing_tile_id)[0] : null
+    let tile_label = tile_to_edit ? tile_to_edit.label : '';
+    let tile_character = tile_to_edit ? tile_to_edit.character : '';
+    let tile_color = tile_to_edit ? tile_to_edit.color : '';
+    let tile_data = tile_to_edit ? JSON.stringify(tile_to_edit.data) : '';
+    
     this.state = {
-      tile_label: '',
-      tile_character: '',
-      tile_color: '',
-      tile_data: '',
+      tile_label,
+      tile_character,
+      tile_color,
+      tile_data,
     }
   }
 
@@ -25,10 +31,14 @@ class TileForm extends Component {
       label: this.state.tile_label,
       character: this.state.tile_character,
       color: this.state.tile_color,
-      data: {...this.state.tile_data},
+      data: JSON.parse(this.state.tile_data),
     }
     
-    this.props.handleAddTile(new_tile);
+    if (this.props.editing_tile_id) {
+      this.props.handleEditTile(new_tile, this.props.editing_tile_id)
+    } else {
+      this.props.handleAddTile(new_tile);
+    }
   }
 
   render() {

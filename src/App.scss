@@ -72,8 +72,23 @@ button:focus {
   }
 }
 
+.TilePlate {
+  flex: 1;
+  justify-content: flex-end;
+  flex-direction: row;
+  display: flex;
+}
+
 .JsonView {
   padding: 0px 74px;
+}
+
+.TilePreview {
+  display: inline;
+  background-color: #333;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 6px;
 }
 
 .konvajs-content {

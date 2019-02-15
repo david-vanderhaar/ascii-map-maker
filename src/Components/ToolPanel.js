@@ -31,7 +31,10 @@ class ToolPanel extends Component {
         {/* {this.state.value === 0 && <TilePalette handleSwapSelectedTile={this.props.handleSwapSelectedTile}/>}
         {this.state.value === 1 && <RegionViewer />} */}
         <span className={this.state.value === 0 ? '' : 'hidden'}>
-          <TilePalette handleSwapSelectedTile={this.props.handleSwapSelectedTile}/>
+          <TilePalette 
+            handleSwapSelectedTile={this.props.handleSwapSelectedTile}
+            selected_tile={this.props.selected_tile}
+          />
         </span>
         <span className={this.state.value === 1 ? '' : 'hidden'}>
           <RegionViewer />

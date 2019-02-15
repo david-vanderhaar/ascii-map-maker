@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import TileForm from './TileForm';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import TilePreview from './TilePreview';
 
-const TilePlate = ({id, label, color, character, data, handleSwapSelectedTile, handleRemoveTile}) => (
+const TilePlate = ({ id, label, color, character, data, handleSwapSelectedTile, handleRemoveTile, handleToggleEdit}) => (
   <div className='TilePlate'>
     <Button 
       variant="contained" 
@@ -13,15 +15,26 @@ const TilePlate = ({id, label, color, character, data, handleSwapSelectedTile, h
     >
       {label}
     </Button>
-    <Button 
-      color="secondary" 
-      aria-label="remove tile"
-      onClick={() => {handleRemoveTile(id)}}
-    >
-      <i className="material-icons">
-        delete
-      </i>
-    </Button>
+    <span className="actions">
+      <Button 
+        color="secondary" 
+        aria-label="remove tile"
+        onClick={() => {handleRemoveTile(id)}}
+      >
+        <i className="material-icons">
+          delete
+        </i>
+      </Button>
+      <Button 
+        color="secondary" 
+        aria-label="edit tile"
+        onClick={() => {handleToggleEdit(id)}}
+      >
+        <i className="material-icons">
+          edit
+        </i>
+      </Button>
+    </span>
   </div>
 )
 
@@ -60,6 +73,7 @@ class TilePalette extends Component {
         },
       ],
       form_is_visible: false,
+      editing_tile_id: null,
     };
   }
 
@@ -75,6 +89,7 @@ class TilePalette extends Component {
           data={{...tile.data}}
           handleSwapSelectedTile={this.props.handleSwapSelectedTile}
           handleRemoveTile={this.handleRemoveTile.bind(this)}
+          handleToggleEdit={this.handleToggleEdit.bind(this)}
         />
       )
     })
@@ -82,6 +97,10 @@ class TilePalette extends Component {
 
   handleToggleForm () {
     this.setState({form_is_visible: !this.state.form_is_visible})
+  }
+
+  handleToggleEdit (editing_tile_id) {
+    this.setState({ editing_tile_id, form_is_visible: false,}, () => {this.setState({form_is_visible: true})})
   }
 
   handleAddTile (new_tile) {
@@ -92,6 +111,24 @@ class TilePalette extends Component {
       tiles: tiles.concat({ ...tile_id, ...new_tile }),
       form_is_visible: false,
     })
+    this.props.handleSwapSelectedTile(new_tile)
+  }
+  
+  handleEditTile (new_tile, id) {
+    let tiles = [...this.state.tiles].map((tile) => {
+      if (tile.id === id) {
+        new_tile.id = id;
+        return {...id, ...new_tile}
+      } else {
+        return tile
+      }
+    });
+    this.setState({
+      tiles,
+      form_is_visible: false,
+      editing_tile_id: null,
+    })
+    this.props.handleSwapSelectedTile(new_tile)
   }
 
   handleRemoveTile (id) {
@@ -102,8 +139,16 @@ class TilePalette extends Component {
   render() {
     return (
       <div className="TilePalette tool-pane">
-        <h4>Palette</h4>
-        {this.drawTilePlates()}
+        <Grid container spacing={24}>
+          <Grid item xs={12} sm={8}>
+            <h5>Palette</h5>
+            {this.drawTilePlates()}
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <h5>Current Tile</h5>
+            <TilePreview character={this.props.selected_tile.character} color={this.props.selected_tile.color} />
+          </Grid>
+        </Grid>
         <br />
         <Button 
           variant="outlined" 
@@ -126,7 +171,15 @@ class TilePalette extends Component {
           }
         </Button>
         {
-          this.state.form_is_visible && <TileForm handleAddTile={this.handleAddTile.bind(this)}/>
+          this.state.form_is_visible && 
+          (
+            <TileForm 
+              tiles={this.state.tiles}
+              editing_tile_id={this.state.editing_tile_id}
+              handleEditTile={this.handleEditTile.bind(this)}
+              handleAddTile={this.handleAddTile.bind(this)}
+            />
+          )
         }
       </div>
     );
