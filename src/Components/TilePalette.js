@@ -4,13 +4,14 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TilePreview from './TilePreview';
 
-const TilePlate = ({ id, label, color, character, data, handleSwapSelectedTile, handleRemoveTile, handleToggleEdit}) => (
+const TilePlate = ({ id, label, color, character, data, handleSwapSelectedTile, handleCloseForm, handleRemoveTile, handleToggleEdit}) => (
   <div className='TilePlate'>
     <Button 
       variant="contained" 
       color="primary"
       onClick={() => {
         handleSwapSelectedTile({character, color, data})
+        handleCloseForm();
       }}
     >
       {label}
@@ -88,6 +89,7 @@ class TilePalette extends Component {
           character={tile.character}
           data={{...tile.data}}
           handleSwapSelectedTile={this.props.handleSwapSelectedTile}
+          handleCloseForm={this.handleCloseForm.bind(this)}
           handleRemoveTile={this.handleRemoveTile.bind(this)}
           handleToggleEdit={this.handleToggleEdit.bind(this)}
         />
@@ -97,6 +99,10 @@ class TilePalette extends Component {
 
   handleToggleForm () {
     this.setState({form_is_visible: !this.state.form_is_visible})
+  }
+
+  handleCloseForm () {
+    this.setState({ form_is_visible: false, editing_tile_id: null})
   }
 
   handleToggleEdit (editing_tile_id) {
@@ -133,7 +139,11 @@ class TilePalette extends Component {
 
   handleRemoveTile (id) {
     let tiles = this.state.tiles.filter((tile) => tile.id !== id);
-    this.setState({tiles});
+    this.setState({
+      tiles,
+      form_is_visible: false,
+      editing_tile_id: null,
+    });
   }
 
   render() {

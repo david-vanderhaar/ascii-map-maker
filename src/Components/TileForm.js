@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
+import { SketchPicker } from 'react-color';
 
 class TileForm extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class TileForm extends Component {
     let tile_to_edit = this.props.editing_tile_id ? this.props.tiles.filter((tile) => tile.id === this.props.editing_tile_id)[0] : null
     let tile_label = tile_to_edit ? tile_to_edit.label : '';
     let tile_character = tile_to_edit ? tile_to_edit.character : '';
-    let tile_color = tile_to_edit ? tile_to_edit.color : '';
+    let tile_color = tile_to_edit ? tile_to_edit.color : '#fff';
     let tile_data = tile_to_edit ? JSON.stringify(tile_to_edit.data) : '';
     
     this.state = {
@@ -26,12 +27,21 @@ class TileForm extends Component {
     });
   };
 
+  handleColorChange (color, event) {
+    this.setState({tile_color: color.hex})
+  }
+
   onSubmit () {
     let new_tile = {
       label: this.state.tile_label,
       character: this.state.tile_character,
       color: this.state.tile_color,
-      data: JSON.parse(this.state.tile_data),
+    }
+
+    try {
+      new_tile.data = JSON.parse(this.state.tile_data);
+    } catch(e) {
+      new_tile.data = this.state.tile_data;
     }
     
     if (this.props.editing_tile_id) {
@@ -63,18 +73,13 @@ class TileForm extends Component {
             margin="normal"
             variant="outlined"
           />
-          <TextField
-            id="tile-color"
-            label="Hex Color"
-            className={'text-field'}
-            defaultValue={this.state.tile_color}
-            onChange={this.handleChange('tile_color')}
-            margin="normal"
-            variant="outlined"
-            InputProps={{
-              startAdornment: <InputAdornment position="start">#</InputAdornment>,
-            }}
+          <div className='form-label'>Color</div>
+          <SketchPicker 
+            width='initial'
+            color={this.state.tile_color}
+            onChangeComplete={this.handleColorChange.bind(this)}
           />
+          <br />
           <TextField
             id="tile-data"
             label="Data"
