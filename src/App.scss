@@ -42,7 +42,7 @@ button:focus {
   }
 }
 
-.TileForm, .Settings {
+.TileForm, .Settings, .LayerForm {
   .form {
     display: flex;
     flex-wrap: wrap;
@@ -81,11 +81,33 @@ button:focus {
   }
 }
 
-.TilePlate {
+.TilePlate,
+.LayerPlate {
   flex: 1;
   justify-content: flex-end;
   flex-direction: row;
   display: flex;
+}
+
+
+.Layers {
+  .layer-edit-form {
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+    padding: 0px 10px;
+  }
+}
+.LayerPlate {
+  justify-content: flex-start;
+  padding: 10px;
+}
+
+.layer-selected {
+  background-color: #d8d8d8;
+  border-radius: 5px;
 }
 
 .JsonView {

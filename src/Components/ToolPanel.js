@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import TilePalette from './TilePalette';
+import Layers from './Layers';
 import RegionViewer from './RegionViewer';
 import Settings from "./Settings";
 
@@ -24,6 +25,7 @@ class ToolPanel extends Component {
         <AppBar className='tool-tabs' position="static">
           <Tabs variant="fullWidth" value={this.state.value} onChange={this.handleChange}>
             <Tab label="Palette" />
+            <Tab label="Layers" />
             <Tab label="Regions" />
             <Tab label="Settings" />
           </Tabs>
@@ -37,9 +39,19 @@ class ToolPanel extends Component {
           />
         </span>
         <span className={this.state.value === 1 ? '' : 'hidden'}>
-          <RegionViewer />
+          <Layers 
+            layers={this.props.layers}
+            current_layer={this.props.current_layer}
+            handleAddLayer={this.props.handleAddLayer}
+            handleSwapLayer={this.props.handleSwapLayer}
+            handleRemoveLayer={this.props.handleRemoveLayer}
+            handleEditLayer={this.props.handleEditLayer}
+          />
         </span>
         <span className={this.state.value === 2 ? '' : 'hidden'}>
+          <RegionViewer />
+        </span>
+        <span className={this.state.value === 3 ? '' : 'hidden'}>
           <Settings
             cols={this.props.cols} 
             rows={this.props.rows} 

@@ -23,14 +23,11 @@ class App extends Component {
     const tiles = new Array(cols * rows).fill({ ...empty_tile })
 
     this.state = {
-      cols,
-      rows,
+      default_cols: cols,
+      default_rows: rows,
       tile_size,
       tile_gutter,
       empty_tile,
-      tiles,
-      tile_history: [JSON.stringify(tiles)],
-      tile_history_index: 0,
       tile_history_max: 10,
       selected_tile: {
         character: '#',
@@ -38,6 +35,29 @@ class App extends Component {
         data: null,
       },
       tool_in_use: 'pencil',
+      layers: [
+        {
+          id: 1,
+          name: 'Base',
+          cols,
+          rows,
+          tiles,
+          tile_history: [JSON.stringify(tiles)],
+          tile_history_index: 0,
+          deletable: false,
+        },
+        {
+          id: 2,
+          name: 'Base 2',
+          cols,
+          rows,
+          tiles,
+          tile_history: [JSON.stringify(tiles)],
+          tile_history_index: 0,
+          deletable: true,
+        },
+      ],
+      current_layer: 0,
     }
   }
 
@@ -46,20 +66,24 @@ class App extends Component {
   }
 
   handleUndo () {
-    let tile_history_index = this.state.tile_history_index + 1
-    let tiles = JSON.parse(this.state.tile_history[tile_history_index])
+    let tile_history_index = this.state.layers[this.state.current_layer].tile_history_index + 1
+    let tiles = JSON.parse(this.state.layers[this.state.current_layer].tile_history[tile_history_index])
+    let layers = [...this.state.layers];
+    layers[this.state.current_layer].tiles = tiles;
+    layers[this.state.current_layer].tile_history_index = tile_history_index;
     this.setState({
-      tiles,
-      tile_history_index
+      layers
     })
   }
   
   handleRedo () {
-    let tile_history_index = this.state.tile_history_index - 1
-    let tiles = JSON.parse(this.state.tile_history[tile_history_index])
+    let tile_history_index = this.state.layers[this.state.current_layer].tile_history_index - 1
+    let tiles = JSON.parse(this.state.layers[this.state.current_layer].tile_history[tile_history_index])
+    let layers = [...this.state.layers];
+    layers[this.state.current_layer].tiles = tiles;
+    layers[this.state.current_layer].tile_history_index = tile_history_index;
     this.setState({
-      tiles,
-      tile_history_index
+      layers
     })
   }
 
@@ -69,17 +93,67 @@ class App extends Component {
   }
 
   handleUpdateTiles (tiles) {
-    let tile_history = [JSON.stringify(tiles), ...this.state.tile_history].slice(this.state.tile_history_index, this.state.tile_history_max)
+    let tile_history = [JSON.stringify(tiles), ...this.state.layers[this.state.current_layer].tile_history].slice(this.state.layers[this.state.current_layer].tile_history_index, this.state.tile_history_max)
+    let layers = [...this.state.layers];
+    layers[this.state.current_layer].tile_history_index = 0;
+    layers[this.state.current_layer].tiles = tiles;
+    layers[this.state.current_layer].tile_history = tile_history;
     
     this.setState({
-      tiles,
-      tile_history,
-      tile_history_index: 0,
+      layers
+    })
+  }
+  
+  handleUpdateGridSize (cols, rows, tiles) {
+    let layers = [...this.state.layers];
+    layers[this.state.current_layer].cols = cols;
+    layers[this.state.current_layer].rows = rows;
+    layers[this.state.current_layer].tiles = tiles;
+
+    this.setState({
+      layers
     })
   }
 
-  handleUpdateGridSize (cols, rows, tiles) {
-    this.setState({cols, rows, tiles})
+  handleAddLayer (new_layer) {
+    const tiles = new Array(this.state.default_cols * this.state.default_rows).fill({ ...this.state.empty_tile });
+    
+    let layers = [...this.state.layers];
+    let next_id = layers.length > 0 ? layers[layers.length - 1].id + 1 : 1;
+    new_layer.id = next_id;
+    new_layer.tiles = tiles;
+    new_layer.cols = this.state.default_cols;
+    new_layer.rows = this.state.default_rows;
+    new_layer.tile_history = [JSON.stringify(tiles)];
+    new_layer.tile_history_index = 0;
+    new_layer.deletable = true;
+
+    layers = layers.concat(new_layer);
+    this.setState({layers},
+      () => {
+        this.handleSwapLayer(next_id);
+      }
+    );
+  }
+
+  handleSwapLayer(id) {
+    this.setState({current_layer: id - 1})
+  }
+
+  handleRemoveLayer(id) {
+    let layers = [...this.state.layers].filter((layer) => layer.id !== id);
+    this.setState({layers, current_layer: 0});
+  }
+
+  handleEditLayer(id, name) {
+    let layers = [...this.state.layers].map((layer) => {
+      if (layer.id === id) {
+        layer.name = name;
+      }
+      return layer;
+    });
+    this.setState({layers});
+
   }
 
   render() {
@@ -93,9 +167,8 @@ class App extends Component {
                 onToolSwitch={this.handleToolSwitch.bind(this)}
                 onUndo={this.handleUndo.bind(this)}
                 onRedo={this.handleRedo.bind(this)}
-                tile_history={this.state.tile_history}
-                // tile_history_max={this.state.tile_history_max}
-                tile_history_index={this.state.tile_history_index}
+                tile_history={this.state.layers[this.state.current_layer].tile_history}
+                tile_history_index={this.state.layers[this.state.current_layer].tile_history_index}
                 selected_tile={this.state.selected_tile}
                 tool_in_use={this.state.tool_in_use}
               />
@@ -114,9 +187,9 @@ class App extends Component {
               <Grid container >
                 <Grid item xs={12} sm={8}>
                   <TileMap
-                    cols={this.state.cols}
-                    rows={this.state.rows}
-                    tiles={this.state.tiles}
+                    cols={this.state.layers[this.state.current_layer].cols}
+                    rows={this.state.layers[this.state.current_layer].rows}
+                    tiles={this.state.layers[this.state.current_layer].tiles}
                     tile_size={32}
                     tile_gutter={8}
                     selected_tile={{ ...this.state.selected_tile }}
@@ -127,12 +200,18 @@ class App extends Component {
                 </ Grid>
                 <Grid item xs={12} sm={4}>
                   <ToolPanel 
-                    cols={this.state.cols}
-                    rows={this.state.rows}
-                    tiles={this.state.tiles}
+                    layers={this.state.layers}
+                    current_layer={this.state.current_layer}
+                    cols={this.state.layers[this.state.current_layer].cols}
+                    rows={this.state.layers[this.state.current_layer].rows}
+                    tiles={this.state.layers[this.state.current_layer].tiles}
                     empty_tile={this.state.empty_tile}
                     selected_tile={this.state.selected_tile}
                     handleSwapSelectedTile={this.handleSwapSelectedTile.bind(this)} 
+                    handleAddLayer={this.handleAddLayer.bind(this)} 
+                    handleSwapLayer={this.handleSwapLayer.bind(this)} 
+                    handleRemoveLayer={this.handleRemoveLayer.bind(this)} 
+                    handleEditLayer={this.handleEditLayer.bind(this)} 
                     onUpdateGridSize={this.handleUpdateGridSize.bind(this)} 
                   />
                 </ Grid>
@@ -141,9 +220,9 @@ class App extends Component {
             <Route path={'/export'} render={
               (props) => (
                 <JsonView 
-                  cols={this.state.cols}
-                  rows={this.state.rows}
-                  tiles={this.state.tiles} 
+                  cols={this.state.layers[this.state.current_layer].cols}
+                  rows={this.state.layers[this.state.current_layer].rows}
+                  tiles={this.state.layers[this.state.current_layer].tiles} 
                 />
               )} 
             />
