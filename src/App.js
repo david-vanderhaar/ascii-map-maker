@@ -9,6 +9,7 @@ import JsonView from './Components/JsonView';
 import TileMap from './Components/TileMap';
 import ToolPanel from './Components/ToolPanel';
 import GridToolbar from './Components/Toolbar';
+import SaveList from './Components/SaveList';
 import Grid from '@material-ui/core/Grid';
 
 class App extends Component {
@@ -20,9 +21,14 @@ class App extends Component {
     const tile_size = 32;
     const tile_gutter = 8;
     const empty_tile = { type: 0, character: '', color: 'white', data: null };
-    const tiles = new Array(cols * rows).fill({ ...empty_tile })
+    const tiles = new Array(cols * rows).fill({ ...empty_tile });
+    const local_storage_key = 'ascii_map_maker';
+    const saves = JSON.parse(localStorage.getItem(local_storage_key));
 
     this.state = {
+      local_storage_key,
+      show_saves: false,
+      saves,
       default_cols: cols,
       default_rows: rows,
       tile_size,
@@ -153,7 +159,50 @@ class App extends Component {
       return layer;
     });
     this.setState({layers});
+  }
 
+  handleToggleSaves (value) {
+    this.setState({
+      show_saves: value,
+    })
+  }
+
+  handleSaveStateToLocalStorage () {
+    let local_saves = JSON.parse(localStorage.getItem(this.state.local_storage_key));
+    let next_id  = 1;
+    if (local_saves) {
+      next_id = local_saves.length > 0 ? local_saves[local_saves.length - 1].id + 1 : 1;
+    }
+    let new_save = {
+      id: next_id,
+      timestamp: new Date(),
+      data: this.state,
+    }
+
+    let saves = local_saves !== null ? [...local_saves, new_save] : [new_save];
+
+    try {
+      localStorage.setItem(this.state.local_storage_key, JSON.stringify(saves));
+      this.setState({saves})
+    } catch(error) {
+      alert('Local storage is full');
+    }
+  }
+  
+  handleLoadStateFromLocalStorage (id) {
+    let save = this.state.saves.filter((save) => save.id === id);
+    if (save.length > 0) {
+      let new_state = {...save[0].data, saves: [...this.state.saves]}
+      this.setState(new_state);
+    }
+    this.handleToggleSaves(false);
+  }
+
+  handleDeleteStateFromLocalStorage (id) {
+    let local_saves = JSON.parse(localStorage.getItem(this.state.local_storage_key));
+    let remaining_saves = local_saves.filter((save) => save.id !== id);
+    localStorage.setItem(this.state.local_storage_key, JSON.stringify(remaining_saves));
+    this.setState({ saves: remaining_saves });
   }
 
   render() {
@@ -173,10 +222,34 @@ class App extends Component {
                 tool_in_use={this.state.tool_in_use}
               />
               <div className='nav-buttons-right'>
+                <Button 
+                  variant='contained'
+                  color='secondary'
+                  onClick={this.handleSaveStateToLocalStorage.bind(this)}
+                >
+                  Save
+                </Button>
+                <Button 
+                  variant='contained'
+                  color='secondary'
+                  disabled={!this.state.saves.length}
+                  onClick={() => {this.handleToggleSaves(!this.state.show_saves)}}
+                >
+                  Load
+                </Button>
                 <Button color="inherit" onClick={() => {window.location = '#/export'}}>Export</Button>
               </div>
             </Toolbar>
           </AppBar>
+          {
+            this.state.show_saves && (
+              <SaveList
+                saves={this.state.saves}
+                onLoadSave={this.handleLoadStateFromLocalStorage.bind(this)}
+                onDeleteSave={this.handleDeleteStateFromLocalStorage.bind(this)}
+              />
+            )
+          }
           <AnimatedSwitch
             atEnter={{ opacity: 0 }}
             atLeave={{ opacity: 0 }}

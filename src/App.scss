@@ -20,6 +20,11 @@ button:focus {
     padding-right: 8px;
     margin-right: 8px;
   }
+  .nav-buttons-right {
+    button {
+      margin-right: 8px; 
+    }
+  }
   .Toolbar {
     flex-grow: 1;
     .btn-tool {
@@ -120,6 +125,17 @@ button:focus {
   font-size: 24px;
   padding: 10px;
   border-radius: 6px;
+}
+
+.SaveList {
+  background-color: $theme-main;
+  max-width: 400px;
+  position: absolute;
+  right: 0px;
+  top: 65px;
+  height: calc(100vh - 65px);
+  padding: 24px;
+  z-index: 10;
 }
 
 .konvajs-content {

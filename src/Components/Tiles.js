@@ -37,6 +37,8 @@ export class TextTile extends Component {
       fill: props.color,
       hover_fill: 'red',
       is_hovering: false,
+      viewing_offset: -16,
+      viewing_size_increase: 8,
     };
   }
 
@@ -61,13 +63,16 @@ export class TextTile extends Component {
   };
 
   render() {
+    const viewing_offset = this.props.is_viewing * this.state.viewing_offset;
+    const viewing_size_increase = this.props.is_viewing * this.state.viewing_size_increase;
+
     return (
       <Text
         text={this.props.character}
         fill={this.state.is_hovering ? this.state.hover_fill: this.props.color}
-        x={this.props.x}
-        y={this.props.y}
-        fontSize={16}
+        x={this.props.x + viewing_offset}
+        y={this.props.y + viewing_offset}
+        fontSize={16 + viewing_size_increase}
         align='center'
         verticalAlign='middle'
         width={this.props.tile_size}

@@ -18,9 +18,12 @@ class TileMap extends Component {
     let tiles = new Array(this.props.cols).fill(null).map((empty, c) => {
       return new Array(this.props.rows).fill(null).map((empty, r) => {
         let tile = this.getTile(c, r);
+        const is_viewing = false;
+        // const is_viewing = tile.character === '#';
         return (
           <Tiles.TextTile
             key={`${c}-${r}`}
+            is_viewing={is_viewing}
             x={c * this.props.tile_size}
             y={r * this.props.tile_size}
             character={tile.character}
