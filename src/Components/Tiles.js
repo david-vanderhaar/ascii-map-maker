@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Konva from "konva";
-import { Rect, Text } from "react-konva";
+import { Rect, Text, Group } from "react-konva";
 
 export class ColoredRect extends Component {
   constructor(props) {
@@ -53,6 +53,7 @@ export class TextTile extends Component {
     if (this.props.mouse_down) {
       this.props.onUpdateTile(this.props.x, this.props.y)
     }
+    
     this.setState(new_state);
   };
 
@@ -63,10 +64,22 @@ export class TextTile extends Component {
   };
 
   render() {
-    const viewing_offset = this.props.is_viewing * this.state.viewing_offset;
-    const viewing_size_increase = this.props.is_viewing * this.state.viewing_size_increase;
+    const obj_for_view = { character: this.props.character, color: this.props.color, data: this.props.data };
+    const is_viewing = this.props.viewed_tile === JSON.stringify(obj_for_view);
+    const viewing_offset = is_viewing * this.state.viewing_offset;
+    const viewing_size_increase = is_viewing * this.state.viewing_size_increase;
 
-    return (
+    const tile = is_viewing 
+    ? (
+        <Rect
+          x={this.props.x}
+          y={this.props.y}
+          width={this.props.tile_size}
+          height={this.props.tile_size}
+          fill={this.props.color}
+        />
+    )
+    : (
       <Text
         text={this.props.character}
         fill={this.state.is_hovering ? this.state.hover_fill: this.props.color}
@@ -81,6 +94,11 @@ export class TextTile extends Component {
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.handleMouseOut}
       />
+    )
+    return (
+      <Group>
+        {tile}
+      </Group>
     );
   }
 }

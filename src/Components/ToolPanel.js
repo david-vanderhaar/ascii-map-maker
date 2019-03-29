@@ -26,16 +26,16 @@ class ToolPanel extends Component {
           <Tabs variant="fullWidth" value={this.state.value} onChange={this.handleChange}>
             <Tab label="Palette" />
             <Tab label="Layers" />
-            <Tab label="Regions" />
             <Tab label="Settings" />
           </Tabs>
         </AppBar>
-        {/* {this.state.value === 0 && <TilePalette handleSwapSelectedTile={this.props.handleSwapSelectedTile}/>}
-        {this.state.value === 1 && <RegionViewer />} */}
         <span className={this.state.value === 0 ? '' : 'hidden'}>
           <TilePalette 
+            handleSwapViewedTile={this.props.handleSwapViewedTile}
             handleSwapSelectedTile={this.props.handleSwapSelectedTile}
             selected_tile={this.props.selected_tile}
+            viewed_tile_id={this.props.viewed_tile_id}
+            viewed_tile={this.props.viewed_tile}
           />
         </span>
         <span className={this.state.value === 1 ? '' : 'hidden'}>
@@ -49,9 +49,6 @@ class ToolPanel extends Component {
           />
         </span>
         <span className={this.state.value === 2 ? '' : 'hidden'}>
-          <RegionViewer />
-        </span>
-        <span className={this.state.value === 3 ? '' : 'hidden'}>
           <Settings
             cols={this.props.cols} 
             rows={this.props.rows} 

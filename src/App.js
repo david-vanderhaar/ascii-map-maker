@@ -40,6 +40,8 @@ class App extends Component {
         color: '#fff',
         data: null,
       },
+      viewed_tile_id: null,
+      viewed_tile: '',
       tool_in_use: 'pencil',
       layers: [
         {
@@ -96,6 +98,13 @@ class App extends Component {
   handleSwapSelectedTile (selected_tile_properties) {
     let tool_in_use = this.state.tool_in_use === 'eraser' ? 'pencil' : this.state.tool_in_use
     this.setState({selected_tile: selected_tile_properties, tool_in_use});
+  }
+ 
+  handleSwapViewedTile (id, value) {
+    this.setState({
+      viewed_tile_id: id,
+      viewed_tile: value
+    });
   }
 
   handleUpdateTiles (tiles) {
@@ -266,6 +275,7 @@ class App extends Component {
                     tile_size={32}
                     tile_gutter={8}
                     selected_tile={{ ...this.state.selected_tile }}
+                    viewed_tile={this.state.viewed_tile}
                     onUpdateTiles={this.handleUpdateTiles.bind(this)}
                     tool_in_use={this.state.tool_in_use}
                     empty_tile={this.state.empty_tile}
@@ -280,7 +290,10 @@ class App extends Component {
                     tiles={this.state.layers[this.state.current_layer].tiles}
                     empty_tile={this.state.empty_tile}
                     selected_tile={this.state.selected_tile}
+                    viewed_tile_id={this.state.viewed_tile_id}
+                    viewed_tile={this.state.viewed_tile}
                     handleSwapSelectedTile={this.handleSwapSelectedTile.bind(this)} 
+                    handleSwapViewedTile={this.handleSwapViewedTile.bind(this)} 
                     handleAddLayer={this.handleAddLayer.bind(this)} 
                     handleSwapLayer={this.handleSwapLayer.bind(this)} 
                     handleRemoveLayer={this.handleRemoveLayer.bind(this)} 

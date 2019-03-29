@@ -19,15 +19,17 @@ class TileMap extends Component {
       return new Array(this.props.rows).fill(null).map((empty, r) => {
         let tile = this.getTile(c, r);
         const is_viewing = false;
-        // const is_viewing = tile.character === '#';
+        
         return (
           <Tiles.TextTile
             key={`${c}-${r}`}
             is_viewing={is_viewing}
+            viewed_tile={this.props.viewed_tile}
             x={c * this.props.tile_size}
             y={r * this.props.tile_size}
             character={tile.character}
             color={tile.color}
+            data={tile.data}
             tile_size={this.props.tile_size}
             mouse_down={this.state.mouse_down}
             onUpdateTile={this.handleUpdateTile.bind(this)}
@@ -83,7 +85,7 @@ class TileMap extends Component {
         break;
       case 'filler':
         if (JSON.stringify(tiles[row * this.props.cols + col]) !== JSON.stringify(this.props.selected_tile)) {
-          tiles = this.floodFill(this.props.cols, this.props.rows, tiles, col, row, this.props.selected_tile)
+          tiles = this.floodFill(this.props.cols, this.props.rows, tiles, col, row, {...this.props.selected_tile, data: JSON.stringify(this.props.selected_tile.data)})
         }
         break;
       default:

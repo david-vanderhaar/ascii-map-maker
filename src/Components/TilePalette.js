@@ -4,40 +4,71 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TilePreview from './TilePreview';
 
-const TilePlate = ({ id, label, color, character, data, handleSwapSelectedTile, handleCloseForm, handleRemoveTile, handleToggleEdit}) => (
-  <div className='TilePlate'>
-    <Button 
-      variant="contained" 
-      color="primary"
+const TilePlate = ({ id, label, color, character, data, can_view, handleSwapSelectedTile, handleSwapViewedTile, handleCloseForm, handleRemoveTile, handleToggleEdit}) => {
+  const view_action = can_view 
+  ? (
+      <Button
+        color="secondary"
+        aria-label="view tile"
+        onClick={() => {
+          let str_data = JSON.stringify(data)
+          handleSwapViewedTile(id, JSON.stringify({ character, color, data: str_data }))
+        }}
+      >
+        <i className="material-icons">
+          search
+        </i>
+      </Button>
+  )
+  : (
+    <Button
+      color="secondary"
+      aria-label="stop viewing tile"
       onClick={() => {
-        handleSwapSelectedTile({character, color, data})
-        handleCloseForm();
+        handleSwapViewedTile(null, '')
       }}
     >
-      {label}
+      <i className="material-icons">
+        close
+      </i>
     </Button>
-    <span className="actions">
+  )
+  return (
+    <div className='TilePlate'>
       <Button 
-        color="secondary" 
-        aria-label="remove tile"
-        onClick={() => {handleRemoveTile(id)}}
+        variant="contained" 
+        color="primary"
+        onClick={() => {
+          handleSwapSelectedTile({character, color, data})
+          handleCloseForm();
+        }}
       >
-        <i className="material-icons">
-          delete
-        </i>
+        {label}
       </Button>
-      <Button 
-        color="secondary" 
-        aria-label="edit tile"
-        onClick={() => {handleToggleEdit(id)}}
-      >
-        <i className="material-icons">
-          edit
-        </i>
-      </Button>
-    </span>
-  </div>
-)
+      <span className="actions">
+        <Button 
+          color="secondary" 
+          aria-label="remove tile"
+          onClick={() => {handleRemoveTile(id)}}
+        >
+          <i className="material-icons">
+            delete
+          </i>
+        </Button>
+        <Button 
+          color="secondary" 
+          aria-label="edit tile"
+          onClick={() => {handleToggleEdit(id)}}
+        >
+          <i className="material-icons">
+            edit
+          </i>
+        </Button>
+        { view_action }
+      </span>
+    </div>
+  )
+}
 
 class TilePalette extends Component {
   constructor(props) {
@@ -88,7 +119,9 @@ class TilePalette extends Component {
           color={tile.color}
           character={tile.character}
           data={{...tile.data}}
+          can_view={tile.id !== this.props.viewed_tile_id}
           handleSwapSelectedTile={this.props.handleSwapSelectedTile}
+          handleSwapViewedTile={this.props.handleSwapViewedTile}
           handleCloseForm={this.handleCloseForm.bind(this)}
           handleRemoveTile={this.handleRemoveTile.bind(this)}
           handleToggleEdit={this.handleToggleEdit.bind(this)}
