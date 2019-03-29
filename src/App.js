@@ -23,7 +23,14 @@ class App extends Component {
     const empty_tile = { type: 0, character: '', color: 'white', data: null };
     const tiles = new Array(cols * rows).fill({ ...empty_tile });
     const local_storage_key = 'ascii_map_maker';
-    const saves = JSON.parse(localStorage.getItem(local_storage_key));
+    let saves = [];
+    try {
+      if (localStorage.getItem(local_storage_key)) {
+        saves = JSON.parse(localStorage.getItem(local_storage_key));
+      }
+    } catch(e) {
+      console.log('get saves error');
+    }
 
     this.state = {
       local_storage_key,
