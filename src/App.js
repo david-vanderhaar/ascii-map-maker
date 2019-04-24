@@ -11,6 +11,7 @@ import ToolPanel from './Components/ToolPanel';
 import GridToolbar from './Components/Toolbar';
 import SaveList from './Components/SaveList';
 import Grid from '@material-ui/core/Grid';
+import { ReactComponent as Logo } from './logo.svg';
 
 class App extends Component {
   constructor() {
@@ -227,6 +228,7 @@ class App extends Component {
         <div className="App">
           <AppBar className="NavBar" position="static">
             <Toolbar>
+              <Logo className='Logo'/>
               <h5 className="nav-title" onClick={() => { window.location = '#/' }}>ASCII Map Maker</h5>
               <GridToolbar 
                 onToolSwitch={this.handleToolSwitch.bind(this)}
