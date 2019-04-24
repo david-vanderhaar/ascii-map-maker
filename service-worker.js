@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/ascii-map-maker/precache-manifest.5401f53904ff65c659d4467d578d8e88.js"
+  "/ascii-map-maker/precache-manifest.9fcf09995b54d7bccae480d962580bca.js"
 );
 
 workbox.clientsClaim();

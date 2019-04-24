@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/ascii-map-maker/static/css/main.7a6de9a6.chunk.css"
   },
   {
-    "revision": "26f05f10c609a78f2664d30e8d3f279c",
+    "revision": "ea0823f8706f29aff6684e36d2432a33",
     "url": "/ascii-map-maker/index.html"
   }
 ];
