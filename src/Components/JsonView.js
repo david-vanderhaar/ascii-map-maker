@@ -3,6 +3,20 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
+const getTile = (totalCols, col, row, tiles) => {
+  return tiles[row * totalCols + col]
+}
+
+const convertTileArrayToObj = (cols, rows, tiles) => {
+  let tileObject = {};
+  new Array(cols).fill(null).forEach((empty, c) => {
+    new Array(rows).fill(null).forEach((empty, r) => {
+      let tile = getTile(cols, c, r, tiles);
+      tileObject[`${c},${r}`] = tile;
+    })
+  })
+  return tileObject;
+}
 
 const JsonView = ({ cols, rows, tiles }) => (
   <div className='JsonView'>
@@ -28,7 +42,9 @@ const JsonView = ({ cols, rows, tiles }) => (
           fullWidth
           rowsMax="8"
           value={JSON.stringify({
-            cols, rows, tiles
+            cols,
+            rows,
+            tiles: convertTileArrayToObj(cols, rows, tiles),
           })}
           margin="normal"
           variant="outlined"

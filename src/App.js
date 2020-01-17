@@ -116,7 +116,15 @@ class App extends Component {
   }
 
   handleUpdateTiles (tiles) {
-    let tile_history = [JSON.stringify(tiles), ...this.state.layers[this.state.current_layer].tile_history].slice(this.state.layers[this.state.current_layer].tile_history_index, this.state.tile_history_max)
+    const tile_history_index = this.state.layers[this.state.current_layer].tile_history_index;
+    let tile_history = [
+      JSON.stringify(tiles),
+      ...this.state.layers[this.state.current_layer].tile_history
+    ].slice(
+      tile_history_index,
+      this.state.tile_history_max
+    )
+
     let layers = [...this.state.layers];
     layers[this.state.current_layer].tile_history_index = 0;
     layers[this.state.current_layer].tiles = tiles;

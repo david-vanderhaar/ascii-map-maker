@@ -70,32 +70,37 @@ class TileMap extends Component {
     const col = x / this.props.tile_size;
     const row = y / this.props.tile_size;
     let tiles = JSON.parse(JSON.stringify(this.props.tiles)); // cheap deep clone
-
+    const currentTile = JSON.stringify(tiles[row * this.props.cols + col])
+    let tile_changed = false;
     switch (this.props.tool_in_use) {
+      default:
       case 'pencil':
-        tiles[row * this.props.cols + col] = ({
+        const newTile = {
           type: 1,
           character: this.props.selected_tile.character,
           color: this.props.selected_tile.color,
           data: JSON.stringify(this.props.selected_tile.data),
-        });
+        }
+        if (currentTile !== JSON.stringify(newTile)) {
+          tiles[row * this.props.cols + col] = (newTile);
+          tile_changed = true;
+        }
         break;
       case 'eraser':
-        tiles[row * this.props.cols + col] = ({ ...this.props.empty_tile })
+        if (currentTile !== JSON.stringify(this.props.empty_tile)) {
+          tiles[row * this.props.cols + col] = ({ ...this.props.empty_tile })
+          tile_changed = true;
+        }
         break;
       case 'filler':
         if (JSON.stringify(tiles[row * this.props.cols + col]) !== JSON.stringify(this.props.selected_tile)) {
           tiles = this.floodFill(this.props.cols, this.props.rows, tiles, col, row, {...this.props.selected_tile, data: JSON.stringify(this.props.selected_tile.data)})
         }
+        tile_changed = true;
         break;
-      default:
-        tiles[row * this.props.cols + col] = ({
-          type: 1,
-          character: this.props.selected_tile.character,
-          color: this.props.selected_tile.color,
-        });
     }
-    this.props.onUpdateTiles(tiles)
+
+    if (tile_changed) this.props.onUpdateTiles(tiles)
   }
 
   handleMouseDown () {
