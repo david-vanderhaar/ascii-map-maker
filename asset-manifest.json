@@ -1,7 +1,7 @@
 {
   "main.css": "/ascii-map-maker/static/css/main.7a6de9a6.chunk.css",
-  "main.js": "/ascii-map-maker/static/js/main.8fc5d970.chunk.js",
-  "main.js.map": "/ascii-map-maker/static/js/main.8fc5d970.chunk.js.map",
+  "main.js": "/ascii-map-maker/static/js/main.9fa85647.chunk.js",
+  "main.js.map": "/ascii-map-maker/static/js/main.9fa85647.chunk.js.map",
   "static/js/1.d5d2ce0e.chunk.js": "/ascii-map-maker/static/js/1.d5d2ce0e.chunk.js",
   "static/js/1.d5d2ce0e.chunk.js.map": "/ascii-map-maker/static/js/1.d5d2ce0e.chunk.js.map",
   "runtime~main.js": "/ascii-map-maker/static/js/runtime~main.803d166c.js",
@@ -9,6 +9,6 @@
   "static/media/logo.4b4ceabc.svg": "/ascii-map-maker/static/media/logo.4b4ceabc.svg",
   "static/css/main.7a6de9a6.chunk.css.map": "/ascii-map-maker/static/css/main.7a6de9a6.chunk.css.map",
   "index.html": "/ascii-map-maker/index.html",
-  "precache-manifest.9fcf09995b54d7bccae480d962580bca.js": "/ascii-map-maker/precache-manifest.9fcf09995b54d7bccae480d962580bca.js",
+  "precache-manifest.42800cefaa0514ba7b60ae42d2605f10.js": "/ascii-map-maker/precache-manifest.42800cefaa0514ba7b60ae42d2605f10.js",
   "service-worker.js": "/ascii-map-maker/service-worker.js"
 }

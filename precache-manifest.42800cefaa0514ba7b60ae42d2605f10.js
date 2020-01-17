@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/ascii-map-maker/static/js/runtime~main.803d166c.js"
   },
   {
-    "revision": "8fc5d9705c320e3cc31e",
-    "url": "/ascii-map-maker/static/js/main.8fc5d970.chunk.js"
+    "revision": "9fa856479f4820754b82",
+    "url": "/ascii-map-maker/static/js/main.9fa85647.chunk.js"
   },
   {
     "revision": "d5d2ce0ec0d91ae7b6f3",
     "url": "/ascii-map-maker/static/js/1.d5d2ce0e.chunk.js"
   },
   {
-    "revision": "8fc5d9705c320e3cc31e",
+    "revision": "9fa856479f4820754b82",
     "url": "/ascii-map-maker/static/css/main.7a6de9a6.chunk.css"
   },
   {
-    "revision": "ea0823f8706f29aff6684e36d2432a33",
+    "revision": "508e3ca40f731de7fad141dcd2651e82",
     "url": "/ascii-map-maker/index.html"
   }
 ];
