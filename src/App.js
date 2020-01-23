@@ -50,6 +50,36 @@ class App extends Component {
       },
       viewed_tile_id: null,
       viewed_tile: '',
+      tile_palette_tiles: [
+        {
+          id: 1,
+          label: 'land',
+          color: '#298',
+          character: 'L',
+          data: {type: 'province', owner: 'Oda'}
+        },
+        {
+          id: 2,
+          label: 'water',
+          color: '#ace',
+          character: '~',
+          data: {type: 'natural', owner: 'none'}
+        },
+        {
+          id: 3,
+          label: 'mountain',
+          color: '#bbb',
+          character: 'M',
+          data: {type: 'natural', owner: 'none'}
+        },
+        {
+          id: 4,
+          label: 'army',
+          color: '#f44',
+          character: '@',
+          data: {type: 'troop', owner: 'Oda'}
+        },
+      ],
       tool_in_use: 'pencil',
       layers: [
         {
@@ -113,6 +143,10 @@ class App extends Component {
       viewed_tile_id: id,
       viewed_tile: value
     });
+  }
+
+  handleUpdateTilePaletteTiles (tile_palette_tiles) {
+    this.setState({ tile_palette_tiles });
   }
 
   handleUpdateTiles (tiles) {
@@ -309,6 +343,8 @@ class App extends Component {
                     selected_tile={this.state.selected_tile}
                     viewed_tile_id={this.state.viewed_tile_id}
                     viewed_tile={this.state.viewed_tile}
+                    tile_palette_tiles={this.state.tile_palette_tiles}
+                    handleUpdateTilePaletteTiles={this.handleUpdateTilePaletteTiles.bind(this)} 
                     handleSwapSelectedTile={this.handleSwapSelectedTile.bind(this)} 
                     handleSwapViewedTile={this.handleSwapViewedTile.bind(this)} 
                     handleAddLayer={this.handleAddLayer.bind(this)} 

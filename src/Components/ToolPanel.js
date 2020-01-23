@@ -33,9 +33,11 @@ class ToolPanel extends Component {
           <TilePalette 
             handleSwapViewedTile={this.props.handleSwapViewedTile}
             handleSwapSelectedTile={this.props.handleSwapSelectedTile}
+            handleUpdateTilePaletteTiles={this.props.handleUpdateTilePaletteTiles}
             selected_tile={this.props.selected_tile}
             viewed_tile_id={this.props.viewed_tile_id}
             viewed_tile={this.props.viewed_tile}
+            tiles={this.props.tile_palette_tiles}
           />
         </span>
         <span className={this.state.value === 1 ? '' : 'hidden'}>

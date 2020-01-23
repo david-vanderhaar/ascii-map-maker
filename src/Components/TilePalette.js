@@ -74,43 +74,13 @@ class TilePalette extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tiles: [
-        {
-          id: 1,
-          label: 'land',
-          color: '#298',
-          character: 'L',
-          data: {type: 'province', owner: 'Oda'}
-        },
-        {
-          id: 2,
-          label: 'water',
-          color: '#ace',
-          character: '~',
-          data: {type: 'natural', owner: 'none'}
-        },
-        {
-          id: 3,
-          label: 'mountain',
-          color: '#bbb',
-          character: 'M',
-          data: {type: 'natural', owner: 'none'}
-        },
-        {
-          id: 4,
-          label: 'army',
-          color: '#f44',
-          character: '@',
-          data: {type: 'troop', owner: 'Oda'}
-        },
-      ],
       form_is_visible: false,
       editing_tile_id: null,
     };
   }
 
   drawTilePlates () {
-    return this.state.tiles.map((tile, index) => {
+    return this.props.tiles.map((tile, index) => {
       return (
         <TilePlate 
           key={index}
@@ -143,18 +113,18 @@ class TilePalette extends Component {
   }
 
   handleAddTile (new_tile) {
-    let tiles = [...this.state.tiles];
+    let tiles = [...this.props.tiles];
     let next_id = tiles.length > 0 ? tiles[tiles.length - 1].id + 1 : 1;
     let tile_id = {id: next_id};
     this.setState({
-      tiles: tiles.concat({ ...tile_id, ...new_tile }),
       form_is_visible: false,
     })
     this.props.handleSwapSelectedTile(new_tile)
+    this.props.handleUpdateTilePaletteTiles(tiles.concat({ ...tile_id, ...new_tile }));
   }
   
   handleEditTile (new_tile, id) {
-    let tiles = [...this.state.tiles].map((tile) => {
+    let tiles = [...this.props.tiles].map((tile) => {
       if (tile.id === id) {
         new_tile.id = id;
         return {...id, ...new_tile}
@@ -163,20 +133,20 @@ class TilePalette extends Component {
       }
     });
     this.setState({
-      tiles,
       form_is_visible: false,
       editing_tile_id: null,
     })
     this.props.handleSwapSelectedTile(new_tile)
+    this.props.handleUpdateTilePaletteTiles(tiles);
   }
 
   handleRemoveTile (id) {
-    let tiles = this.state.tiles.filter((tile) => tile.id !== id);
+    let tiles = this.props.tiles.filter((tile) => tile.id !== id);
     this.setState({
-      tiles,
       form_is_visible: false,
       editing_tile_id: null,
     });
+    this.props.handleUpdateTilePaletteTiles(tiles);
   }
 
   render() {
@@ -217,7 +187,7 @@ class TilePalette extends Component {
           this.state.form_is_visible && 
           (
             <TileForm 
-              tiles={this.state.tiles}
+              tiles={this.props.tiles}
               editing_tile_id={this.state.editing_tile_id}
               handleEditTile={this.handleEditTile.bind(this)}
               handleAddTile={this.handleAddTile.bind(this)}
