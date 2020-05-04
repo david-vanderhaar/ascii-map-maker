@@ -11,8 +11,7 @@ const TilePlate = ({ id, label, color, character, data, can_view, handleSwapSele
         color="secondary"
         aria-label="view tile"
         onClick={() => {
-          let str_data = JSON.stringify(data)
-          handleSwapViewedTile(id, JSON.stringify({ character, color, data: str_data }))
+          handleSwapViewedTile(id, JSON.stringify({ character, color, data, }))
         }}
       >
         <i className="material-icons">

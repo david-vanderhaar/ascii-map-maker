@@ -79,7 +79,7 @@ class TileMap extends Component {
           type: 1,
           character: this.props.selected_tile.character,
           color: this.props.selected_tile.color,
-          data: JSON.stringify(this.props.selected_tile.data),
+          data: this.props.selected_tile.data,
         }
         if (currentTile !== JSON.stringify(newTile)) {
           tiles[row * this.props.cols + col] = (newTile);
@@ -94,7 +94,7 @@ class TileMap extends Component {
         break;
       case 'filler':
         if (JSON.stringify(tiles[row * this.props.cols + col]) !== JSON.stringify(this.props.selected_tile)) {
-          tiles = this.floodFill(this.props.cols, this.props.rows, tiles, col, row, {...this.props.selected_tile, data: JSON.stringify(this.props.selected_tile.data)})
+          tiles = this.floodFill(this.props.cols, this.props.rows, tiles, col, row, {...this.props.selected_tile, data: this.props.selected_tile.data})
         }
         tile_changed = true;
         break;

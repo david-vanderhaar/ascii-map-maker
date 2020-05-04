@@ -10,7 +10,7 @@ class TileForm extends Component {
     let tile_label = tile_to_edit ? tile_to_edit.label : '';
     let tile_character = tile_to_edit ? tile_to_edit.character : '';
     let tile_color = tile_to_edit ? tile_to_edit.color : '#fff';
-    let tile_data = tile_to_edit ? JSON.stringify(tile_to_edit.data) : '';
+    let tile_data = tile_to_edit ? JSON.stringify(tile_to_edit.data) : null;
     
     this.state = {
       tile_label,
@@ -83,7 +83,7 @@ class TileForm extends Component {
             id="tile-data"
             label="Data"
             placeholder='{
-              type: tree
+              "type": "tree"
             }'
             multiline
             defaultValue={this.state.tile_data}
