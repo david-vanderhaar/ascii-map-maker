@@ -29,7 +29,7 @@
     "@material-ui/core": "^3.9.0",
     "gh-pages": "^2.0.1",
     "konva": "^2.6.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "react-color": "^2.17.0",
     "react-konva": "^16.7.1",
     "react-router-dom": "^4.3.1",
