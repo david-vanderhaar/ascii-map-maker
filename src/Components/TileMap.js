@@ -76,6 +76,7 @@ class TileMap extends Component {
       default:
       case 'pencil':
         const newTile = {
+          id: this.props.selected_tile.id,
           type: 1,
           character: this.props.selected_tile.character,
           color: this.props.selected_tile.color,

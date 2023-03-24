@@ -38,7 +38,7 @@ const TilePlate = ({ id, label, color, character, data, can_view, handleSwapSele
         variant="contained" 
         color="primary"
         onClick={() => {
-          handleSwapSelectedTile({character, color, data})
+          handleSwapSelectedTile({id, character, color, data})
           handleCloseForm();
         }}
       >

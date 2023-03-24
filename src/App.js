@@ -7,6 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import JsonView from './Components/JsonView';
 import TileMap from './Components/TileMap';
+import WfcMap from './Components/WFC/WfcMap';
 import ToolPanel from './Components/ToolPanel';
 import GridToolbar from './Components/Toolbar';
 import SaveList from './Components/SaveList';
@@ -21,7 +22,7 @@ class App extends Component {
     const rows = 20;
     const tile_size = 32;
     const tile_gutter = 8;
-    const empty_tile = { type: 0, character: '', color: 'white', data: null };
+    const empty_tile = { id: null, type: 0, character: '', color: 'white', data: null };
     const tiles = new Array(cols * rows).fill({ ...empty_tile });
     const local_storage_key = 'ascii_map_maker';
     let saves = [];
@@ -44,6 +45,7 @@ class App extends Component {
       empty_tile,
       tile_history_max: 10,
       selected_tile: {
+        id: 0,
         character: '#',
         color: '#fff',
         data: null,
@@ -344,7 +346,9 @@ class App extends Component {
                     viewed_tile_id={this.state.viewed_tile_id}
                     viewed_tile={this.state.viewed_tile}
                     tile_palette_tiles={this.state.tile_palette_tiles}
+                    tool_in_use={this.state.tool_in_use}
                     handleUpdateTilePaletteTiles={this.handleUpdateTilePaletteTiles.bind(this)} 
+                    handleUpdateTiles={this.handleUpdateTiles.bind(this)} 
                     handleSwapSelectedTile={this.handleSwapSelectedTile.bind(this)} 
                     handleSwapViewedTile={this.handleSwapViewedTile.bind(this)} 
                     handleAddLayer={this.handleAddLayer.bind(this)} 
@@ -353,6 +357,7 @@ class App extends Component {
                     handleEditLayer={this.handleEditLayer.bind(this)} 
                     onUpdateGridSize={this.handleUpdateGridSize.bind(this)} 
                   />
+                  <WfcMap selected_tile={{ ...this.state.selected_tile }} />
                 </ Grid>
               </ Grid>
             )} />
